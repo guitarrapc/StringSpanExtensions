@@ -15,8 +15,8 @@ jobs:
       - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 5.0.x
-      - run: dotnet build ./src/StringSpan/StringSpan -c Debug
-      - run: dotnet test ./src/StringSpan/StringSpanUnitTests -c Debug
+      - run: dotnet build ./src/StringSpan/StringSpan.csproj -c Debug
+      - run: dotnet test ./src/StringSpanUnitTests/StringSpanUnitTests.csproj -c Debug
 
   benchmark:
     runs-on: ubuntu-latest
@@ -29,5 +29,5 @@ jobs:
       - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 5.0.x
-      - run: dotnet restore ./src/StringSpan/StringSpan.sln -c Debug
-      - run: dotnet run -c Release --filter ** --join
+      - run: dotnet restore ./src/StringSpan.sln -c Debug
+      - run: dotnet run --project ./src/Benchmark/Benchmark.csproj -c Release --filter ** --join
