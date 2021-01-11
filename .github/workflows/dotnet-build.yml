@@ -1,0 +1,33 @@
+name: dotnet-build
+
+# run on both branch push and tag push
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      DOTNET_CLI_TELEMETRY_OPTOUT: 1
+      DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+      NUGET_XMLDOC_MODE: skip
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.x
+      - run: dotnet build ./src/StringSpan/StringSpan -c Debug
+      - run: dotnet test ./src/StringSpan/StringSpanUnitTests -c Debug
+
+  benchmark:
+    runs-on: ubuntu-latest
+    env:
+      DOTNET_CLI_TELEMETRY_OPTOUT: 1
+      DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+      NUGET_XMLDOC_MODE: skip
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.x
+      - run: dotnet restore ./src/StringSpan/StringSpan.sln -c Debug
+      - run: dotnet run -c Release --filter ** --join
